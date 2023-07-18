@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Website Status</title>
+    <style>
+        .up {
+            color: green;
+        }
+        
+        .down {
+            color: red;
+        }
+        
+        .error {
+            color: orange;
+        }
+        
+        .unknown {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>Website Status</h1>
+    <p class="{{ website_status_text|lower }}">{{ website_status_text }}</p>
+</body>
+</html>

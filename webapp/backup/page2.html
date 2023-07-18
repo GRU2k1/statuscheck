@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="refresh" content="60">
+    <title>Status Checking Website</title>
+    <style>
+        .status-code {
+            font-weight: bold;
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .status-2xx {
+            background-color: #9bcf8a;
+            color: #186e1c;
+        }
+        .status-3xx {
+            background-color: #f8d789;
+            color: #a87518;
+        }
+        .status-4xx {
+            background-color: #f7a396;
+            color: #8b1f0a;
+        }
+        .status-5xx {
+            background-color: #f57f7f;
+            color: #791a1a;
+        }
+    </style>
+</head>
+<body>
+    <h1>Status Checking Website</h1>
+    <p>The status code of the application is <span id="status-code" class="status-code"></span>.</p>
+    <p id="status-message"></p> <!-- New paragraph element for status message -->
+</body>
+<script>
+    const getStatusCode = async () => {
+        const url = "{{ WEB_APP_URL }}";
+        const response = await fetch(url);
+        const status = response.status;
+        return status;
+    };
+
+    const updateStatusMessage = (status) => {
+        const statusMessageElement = document.getElementById('status-message');
+
+        if (status === 200) {
+            statusMessageElement.innerHTML = "The application is currently up and running.";
+        } else {
+            statusMessageElement.innerHTML = "The application is currently down.";
+        }
+    };
+
+    const updateStatusCode = (status) => {
+        const statusCodeElement = document.getElementById('status-code');
+        statusCodeElement.innerHTML = status;
+        statusCodeElement.className = 'status-code status-' + Math.floor(status / 100) + 'xx';
+
+        updateStatusMessage(status);
+    };
+
+    getStatusCode().then(updateStatusCode);
+</script>
+</html>

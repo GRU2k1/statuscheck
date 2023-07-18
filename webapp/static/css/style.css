@@ -1,0 +1,26 @@
+status-code {
+    font-weight: bold;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.status-2xx {
+    background-color: #9bcf8a;
+    color: #186e1c;
+}
+
+.status-3xx {
+    background-color: #f8d789;
+    color: #a87518;
+}
+
+.status-4xx {
+    background-color: #f7a396;
+    color: #8b1f0a;
+}
+
+.status-5xx {
+    background-color: #f57f7f;
+    color: #791a1a;
+}

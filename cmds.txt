@@ -1,0 +1,6 @@
+py -3 -m venv (name)
+
+
+
+python manage.py runserver
+python manage.py migrate

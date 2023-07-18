@@ -1,0 +1,30 @@
+from flask import Flask, jsonify
+from flask import Flask, abort, redirect, url_for
+from apscheduler.schedulers.background import BackgroundScheduler
+import requests
+from mail2 import send_email
+app = Flask(__name__)
+port = 8001
+
+@app.route('/')
+def index():
+    return redirect(url_for('check_status'))
+
+@app.route("/check-status", methods=["GET"])
+def check_status():
+    app.app_context()
+    website_url = "http://127.0.0.1:5000/"  # Replace with the URL you want to check
+    try:
+        response = requests.get(website_url)
+        if response.status_code == 200:
+            return jsonify({"status": "Website is up and running"})
+        else:
+            return jsonify({"status": "Website is down"})
+            send_email(sender_email="pubgaccno9@gmail.com",sender_appspassword="jswqgmwpcmfqsorc",receiver_email = "gurucharan20182019@gmail.com",subject="application error",message="error code:404")
+    except requests.exceptions.RequestException:
+        return jsonify({"status": "Website is down"})
+if __name__ == "__main__":
+    sched = BackgroundScheduler(daemon=True)
+    sched.add_job(id='check_status',func=check_status,trigger='interval',minutes=1)
+    sched.start()
+    app.run(debug=True,port=port)
