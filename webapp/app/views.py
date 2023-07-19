@@ -42,12 +42,10 @@ def check_web_app_status():
     # Replace with the URL of your web application
     status_code = response.status_code
     if status_code >= 400:
-        error_message = f'The web application returned an error (Status code: {status_code})' 
-        #retrive the ip address
-        #ip_address = request.META.get('REMOTE_ADDR')
-        #modify the error msg
-        #error_message += f'\n\nIP Address: {ip_address}'
-        send_email('Web Application Error', error_message)
+        return status_code
+        #error_message = f'The web application returned an error (Status code: {status_code})' 
+        #send_email('Web Application Error', error_message)
+    return None
 
 def schedule_task():
     # Schedule the task to run every 1 minute
@@ -61,8 +59,12 @@ def schedule_task():
 
 def page(request):
     # Call the check_web_app_status function
-    check_web_app_status()
+    error_status_code = check_web_app_status()
+    if error_status_code:
+        ip_address = request.META.get('REMOTE_ADDR')
+        error_message = f'The web application returned an error.\nIP Address: {ip_address}\nStatus Code: {error_status_code}'
+        send_email('Web Application Error', error_message)
     #schedule_task(request)
-    ip_address = request.META.get('REMOTE_ADDR')
+    #ip_address = request.META.get('REMOTE_ADDR')
     # Render the page.html template
     return render(request, 'webapp/page.html', {'WEB_APP_URL': WEB_APP_URL})
